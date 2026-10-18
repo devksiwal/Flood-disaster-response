@@ -1,0 +1,216 @@
+# ==============================================================================
+# MASTER ROOT .GITIGNORE (FULL-STACK MONOREPO / MULTI-TIER SYSTEM)
+# Applies to the entire project: Root, Frontend, Backend, Docker, and Tooling
+# ==============================================================================
+
+# ==============================================================================
+# 1. ENVIRONMENT VARIABLES & SECRETS (ROOT & ALL SERVICES)
+# ==============================================================================
+# Ignore all secret environment files across root, frontend/, backend/, etc.
+.env
+.env.*
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Allow tracked template files
+!.env.example
+!*.env.example
+
+# Credentials, keys, and certificates
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+id_rsa
+id_rsa.pub
+
+# ==============================================================================
+# 2. DATABASES, LOCAL STORAGE & DOCKER VOLUMES
+# ==============================================================================
+# SQLite & local relational databases anywhere in the project
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+flood_response.db
+
+# Database dump files (keep SQL migrations and source scripts trackable)
+*.dump
+
+# Docker local persistent volumes & mount directories
+postgres_data/
+db_data/
+
+# ==============================================================================
+# 3. FRONTEND (REACT / VITE / TYPESCRIPT / NODE.JS)
+# ==============================================================================
+# Package manager dependencies (any level: root or frontend/)
+node_modules/
+jspm_packages/
+.pnp/
+.pnp.js
+
+# Production build outputs & static export targets
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+
+# Bundler, compiler, and framework caches
+.vite/
+.turbo/
+.cache/
+*.tsbuildinfo
+
+# Linter and formatter cache files
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# Temporary lockfile artifacts
+.package-lock.json
+
+# ==============================================================================
+# 4. BACKEND (PYTHON / FASTAPI / CREWAI / AI ENGINES)
+# ==============================================================================
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python virtual environments (any variant/name)
+.venv/
+.venv*/
+venv/
+venv*/
+env/
+env*/
+ENV/
+ENV*/
+
+# Packaging, wheels, and egg distributions
+*.egg-info/
+*.egg
+.eggs/
+eggs/
+develop-eggs/
+parts/
+sdist/
+wheels/
+share/python-wheels/
+.installed.cfg
+MANIFEST
+
+# Testing, code coverage, and test runner caches
+.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+
+# AI / ML / Vector Store & LLM Local Caches (CrewAI, LangChain, Embeddings)
+chroma_db/
+.chroma/
+faiss_index/
+vector_store/
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# ==============================================================================
+# 5. DOCKER & CONTAINER OVERRIDES
+# ==============================================================================
+docker-compose.override.yml
+docker-compose*.local.yml
+.docker/
+
+# ==============================================================================
+# 6. LOGS & RUNTIME OUTPUTS
+# ==============================================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==============================================================================
+# 7. TEMPORARY FILES & BACKUPS
+# ==============================================================================
+tmp/
+temp/
+scratch/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# ==============================================================================
+# 8. OPERATING SYSTEM ARTIFACTS
+# ==============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+
+# ==============================================================================
+# 9. IDE & CODE EDITOR WORKSPACES
+# ==============================================================================
+# JetBrains (PyCharm, WebStorm, etc.)
+.idea/
+
+# Visual Studio / Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.vscode/*.log
+
+# Sublime, Eclipse, and other editors
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj

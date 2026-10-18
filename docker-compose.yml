@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: flood_response_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ndma_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-flood_disaster_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ndma_admin} -d ${POSTGRES_DB:-flood_disaster_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - flood_net
+
+  # 2. FastAPI + CrewAI Multi-Agent Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flood_response_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-ndma_admin}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-flood_disaster_db}
+      AI_ENGINE_MODE: ${AI_ENGINE_MODE:-autonomous}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+    ports:
+      - "8000:8000"
+    networks:
+      - flood_net
+
+  # 3. React + TypeScript + Leaflet Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: flood_response_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - flood_net
+
+volumes:
+  postgres_data:
+
+networks:
+  flood_net:
+    driver: bridge
